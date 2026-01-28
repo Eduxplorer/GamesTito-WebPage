@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games Tito - Login</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/auth.js" defer></script>
+</head>
+
+<body>
+
+    <div class="auth-card">
+        <h1 id="authTitle">Games Tito</h1>
+
+        <p id="authSubtitle">Acesse sua conta e curta os GAMES! :D</p>
+        <div id="statusMgs" class="message-box d-none"></div>
+
+        <label for="loginEmail">E-mail</label>
+        <input type="email" id="loginEmail" placeholder="seu@email.com" required>
+
+        <div id="passwordGroup">
+            <label for="loginPass">Senha</label>
+            <input type="password" name="senha" id="loginPass" placeholder="*******" required>
+        </div>
+
+        <button id="mainBtn" onclick="handleLogin()">Entrar</button>
+
+        <div class="link">
+            <a href="register.html" id="linkRegister" class="link-action">Não tem conta? Cadastre-se</a>
+            <a href="#" id="linkToggle" onclick="toggleRecoveryMode(true)" class="link-action">Esqueci minha senha?</a>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

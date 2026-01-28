@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Junte-se a Comunidade Games Tito</title>
+    <link rel="stylesheet" href="./css/style.css" />
+    <script src="./js/auth.js" defer></script>
+</head>
+
+<body>
+    <form class="auth-card">
+        <legend id="authTitle">Games Tito</legend>
+        <p id="authSubtitle">Junte-se à comunidade Games Tito</p>
+
+        <div id="statusMsg" class="message-boxd-none"></div>
+
+        <fieldset>
+            <label for="regName">Nome Completo</label>
+            <input type="text" id="regName" placeholder="Digite seu nome completo..." required>
+
+            <label for="regEmail">Email</label>
+            <input type="email" name="email" id="regEmail" placeholder="seu@email.com" required>
+
+            <label for="regPass">Senha</label>
+            <input type="password" id="regPass" placeholder="********" required>
+
+            <button id="mainBtn" onclick="handleRegister()">Cadastrar</button>
+
+            <div class="link">
+                <a href="index.html" id="linkLogin" class="link-action">Já tem conta? Faça seu login :D</a>
+            </div>
+        </fieldset>
+
+    </form>
+
+</body>
+
+</html>
