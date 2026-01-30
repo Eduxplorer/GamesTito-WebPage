@@ -2,7 +2,7 @@
 // Configuração da URL da API (depois de publicado entra o domínio de produção backend: https://www.dominio.com.br/api/Account)
 // Também poderiamos utilizar um endereço ip https://89.36.235.74:6095/api/Account
 
-const API_URL = "https://localhost:7087/api/Account"
+const API_URL = "https://localhost:7079/api/Account"
 
 // Função para auxiliar as mensagens na tela
 function showMessage(text, isError = true) {
@@ -30,7 +30,7 @@ function toggleRecoveryMode(isRecovery) {
     const msgDiv = document.getElementById('msgDiv');
 
     // Limpa a mensagem anterior  ao trocar de modo 
-    if (msgDiv) msgDiv.className.add('d-none');
+    if (msgDiv) msgDiv.classList.add('d-none');
 
     if (isRecovery) {
         // -- MODO recuperar Senha
@@ -54,7 +54,8 @@ function toggleRecoveryMode(isRecovery) {
         mainBnt.innerHTML = "Entrar";
         mainBnt.onclick = handleLogin; // Altera a função do click
         linkToggle.innerHTML = "Esqueci minha senha?";
-        linkToggle.onclick = () => linkRegister.classList.remove('d-none');
+        linkToggle.onclick = () => toggleRecoveryMode(true);
+        if (linkRegister) linkRegister.classList.remove('d-none');
 
 
 
@@ -146,3 +147,46 @@ async function handleLogin() {
         showMessage("Não foi possivel se conectar ao servidor tente mais tarde.");
     }
 }
+
+/**
+ * Registrar o novo usuário
+ */
+
+async function handleRegister() {
+    const nome = document.getElementById('regName').value;
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPass').value;
+
+    if (!nome || !email || !password) {
+        showMessage("Por favor, preencha todos os campos!");
+        nome.focus();
+        return
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/register`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                nomeCompleto: nome,
+                email: email,
+                passWordHash: password
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            showMessage("Conta criada com sucesso. Redirecionando para o login...", false);
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 2000)
+        } else {
+            showMessage("Falha no cadastro " + result.message);
+        }
+    } catch (error) {
+        showMessage("Não foi possivel se conectar ao servidor tente mais tarde.");
+    }
+}
+
+// Tem que ser um documento público pois irá ficar na máquina do cliente e se o cliente quisert ver o javascript da página poderá ver, mas se você quiser pode deixar privada na hospedagem

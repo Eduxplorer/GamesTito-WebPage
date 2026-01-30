@@ -90,7 +90,7 @@ fieldset {
     transition: all 0.3s ease;
 }
 
-.msg-sucess {
+.msg-success {
     background: var(--success);
     color: var(--light);
     border: solid 1px var(--successLight);
