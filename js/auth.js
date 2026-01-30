@@ -5,9 +5,9 @@
 const API_URL = "https://localhost:7087/api/Account"
 
 // Função para auxiliar as mensagens na tela
-function showMessage(text , isError = true) {
+function showMessage(text, isError = true) {
     const msgDiv = document.getElementById('statusMgs');
-    if(!msgDiv) return;
+    if (!msgDiv) return;
 
     msgDiv.innerText = text;
     msgDiv.classList.remove('d-none', 'msg-success', 'msg-error');
@@ -30,10 +30,10 @@ function toggleRecoveryMode(isRecovery) {
     const msgDiv = document.getElementById('msgDiv');
 
     // Limpa a mensagem anterior  ao trocar de modo 
-    if(msgDiv) msgDiv.className.add('d-none');
+    if (msgDiv) msgDiv.className.add('d-none');
 
-    if(isRecovery) {
-        // Modo recuperar Senha
+    if (isRecovery) {
+        // -- MODO recuperar Senha
         if (passGroup) passGroup.classList.add('d-none'); // esconde o campo senha
 
         // Alterar os nomes dos elementos html
@@ -44,7 +44,65 @@ function toggleRecoveryMode(isRecovery) {
         linkToggle.innerHTML = "Voltar para o Login";
         linkToggle.onclick = () => toggleRecoveryMode(false);
 
-        if(linkRegister) linkRegister.classList.add('d-none');
-    } else {}
+        if (linkRegister) linkRegister.classList.add('d-none');
+    } else {
+        // --- MODO Login
+        // Mostra o campo de senha
+        if (passGroup) passGroup.classList.remove('d-none');
+        authTitle.innerHTML = "Games Tito";
+        authSubtitle.innerText = "Acesse sua conta e curta os GAMES! :D"
+        mainBnt.innerHTML = "Entrar";
+        mainBnt.onclick = handleLogin; // Altera a função do click
+        linkToggle.innerHTML = "Esqueci minha senha?";
+        linkToggle.onclick = () => linkRegister.classList.remove('d-none');
+
+
+
+
+
+    }
+
+}
+
+/**
+ * Lógica de solicitação de recuperação de senha
+ * (Atualiza o campo de tela)
+ */
+
+async function solicitarRecuperacao() {
+    const email = document.getElementById('loginEmail').value;
+    // caso não tenha o email informar ao  usuário que ele precisa digitar o email
+
+    if (!email) {
+        showMessage("Digite seu email no campo para recuperar a senha!");
+        email.focus();
+        return;
+    }
+
+    try {
+        showMessage("Processando à solicitação... ", false);
+
+        // forgot-password
+        const response = await fetch(`${API_URL}/forget-password`, {
+            method: 'POST',
+            headers: { 'Content-type': 'application/json' },
+            body: JSON.stringify({ email: email })
+        }
+        ); // Precisa ser com apóstrofos
+
+        const result = await response.json();
+
+        if (response.ok) {
+            showMessage(result.message, false);
+            // Opcional: volta para o modo login após 4 segundos
+            setTimeout(() => toggleRecoveryMode(false), 4000)
+        } else {
+            showMessage("Erro ao processar: " + result.message);
+        }
+    } catch (error) {
+
+        showMessage("Não foi possivel se conectar ao servidor. Tente novamente mais tarde.");
+    }
+
 
 }
