@@ -106,3 +106,43 @@ async function solicitarRecuperacao() {
 
 
 }
+
+/**
+ *  Login no sistema
+ */
+
+async function handleLogin() {
+    const email = document.getElementById('loginEmail').value;
+
+    const password = document.getElementById('loginPass').value;
+
+    if (!email || !password) {
+        showMessage("Por favor, preencha email e senha!");
+        email.focus();
+        return;
+    }
+
+    try {
+        const response = await fetch(`${API_URL}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: email,
+                passWordHash: password
+            })
+        });
+
+        const result = await response.json()
+
+        if (response.ok) {
+            showMessage("Login realizado! Redirecionando...", false);
+            setTimeout(() => {
+                window.location.href = "dashboard.html";
+            }, 2000);
+        } else {
+            showMessage(result.message || "Usuário ou senha inválidos.");
+        }
+    } catch (error) {
+        showMessage("Não foi possivel se conectar ao servidor tente mais tarde.");
+    }
+}
